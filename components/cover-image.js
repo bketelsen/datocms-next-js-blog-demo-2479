@@ -12,7 +12,7 @@ export default function CoverImage({ title, responsiveImage }) {
   )
   return (
 
-    <div class="w-full md:w-2/3 rounded-t">
+    <div className="w-full md:w-2/3 rounded-t">
       { image}
     </div>
 

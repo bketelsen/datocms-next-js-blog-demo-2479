@@ -1,12 +1,25 @@
 import Head from "next/head";
 import { renderMetaTags, useQuerySubscription } from "react-datocms";
 import Container from "../components/container";
+
+import MainContainer from "../components/maincontainer";
+
+import PostsContainer from "../components/postscontainer";
+import Ghostheader from "../components/ghostheader";
+
+import HomeFooter from "../components/homefooter";
+import LeadCard from "../components/leadcard";
+import Nav from "../components/nav";
+import Subscribe from "../components/subscribe";
+import Posts from "../components/posts";
+import Author from "../components/author";
 import HeroPost from "../components/hero-post";
 import Intro from "../components/intro";
 import Layout from "../components/layout";
 import MoreStories from "../components/more-stories";
 import { request } from "../lib/datocms";
 import { metaTagsFragment, responsiveImageFragment } from "../lib/fragments";
+import { Main } from "next/document";
 
 export async function getStaticProps({ preview }) {
   const graphqlRequest = {
@@ -26,6 +39,9 @@ export async function getStaticProps({ preview }) {
           title
           slug
           excerpt
+          category {
+            name
+          }
           date
           coverImage {
             responsiveImage(imgixParams: {fm: jpg, fit: crop, w: 2000, h: 1000 }) {
@@ -51,14 +67,14 @@ export async function getStaticProps({ preview }) {
     props: {
       subscription: preview
         ? {
-            ...graphqlRequest,
-            initialData: await request(graphqlRequest),
-            token: process.env.NEXT_EXAMPLE_CMS_DATOCMS_API_TOKEN,
-          }
+          ...graphqlRequest,
+          initialData: await request(graphqlRequest),
+          token: process.env.NEXT_EXAMPLE_CMS_DATOCMS_API_TOKEN,
+        }
         : {
-            enabled: false,
-            initialData: await request(graphqlRequest),
-          },
+          enabled: false,
+          initialData: await request(graphqlRequest),
+        },
     },
   };
 }
@@ -76,20 +92,30 @@ export default function Index({ subscription }) {
     <>
       <Layout preview={subscription.preview}>
         <Head>{renderMetaTags(metaTags)}</Head>
+        <Ghostheader />
         <Container>
-          <Intro />
-          {heroPost && (
-            <HeroPost
+          <Nav />
+          <MainContainer>
+            <LeadCard
               title={heroPost.title}
               coverImage={heroPost.coverImage}
+              category={heroPost.category.name}
               date={heroPost.date}
               author={heroPost.author}
               slug={heroPost.slug}
               excerpt={heroPost.excerpt}
             />
-          )}
+            <PostsContainer >
+              <Posts />
+            </PostsContainer>
+            <Subscribe />
+            <Author />
+          </MainContainer>
+
           {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>
+
+        <HomeFooter />
       </Layout>
     </>
   );

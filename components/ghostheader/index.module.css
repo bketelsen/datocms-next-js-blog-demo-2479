@@ -1,0 +1,8 @@
+.heading{
+    @apply w-full m-0 p-0 bg-cover bg-bottom;
+    background-image:url('cover.jpg'); 
+    height: 60vh; 
+    max-height:460px;
+     height: 60vh;
+     max-height: 460px
+  }

@@ -106,13 +106,13 @@ export default function Index({ subscription }) {
               excerpt={heroPost.excerpt}
             />
             <PostsContainer >
-              <Posts />
+              {morePosts.length > 0 &&
+                <Posts posts={morePosts} />}
             </PostsContainer>
             <Subscribe />
             <Author />
           </MainContainer>
 
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
         </Container>
 
         <HomeFooter />
